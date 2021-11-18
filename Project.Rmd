@@ -29,8 +29,8 @@ data1$IsCanceled <- as.factor(data1$IsCanceled)
 datacancelledtidy <- data1%>%filter(IsCanceled == 1)
 datanocanceltidy <- data1%>%filter(IsCanceled == 0)
 
-datacancelled <- data1[data$IsCanceled == 1,]
-datanocancel <- data1[data$IsCanceled == 0,]
+datacancelled <- data2[data2$IsCanceled == 1,]
+datanocancel <- data2[data2$IsCanceled == 0,]
 
 ```
 
@@ -260,14 +260,14 @@ scatterCustType <- ggplot(data = data1) + aes(x=IsCanceled, y=CustomerType) +
 scatterDeposit <- ggplot(data = data1) + aes(x=IsCanceled, y=DepositType) + 
       geom_point() + geom_smooth(method = "lm", se = F)
 
-scatterLeadTime <- ggplot(data = data1) + aes(x=IsCanceled, y=LeadTime) + 
+scatterLeadTime <- ggplot(data = datacancelledtidy) + aes(x=IsCanceled, y=LeadTime) + 
       geom_point() + geom_smooth(method = "lm", se = F)
 
 scatterMarketSeg <- ggplot(data = data1) + aes(x=IsCanceled, y=MarketSegment) + 
       geom_point() + geom_smooth(method = "lm", se = F)
 
 scatterPrevCancel <- ggplot(data = data1) + 
-      aes(x=IsCanceled, y=PreviousCancellations) + 
+      aes(x=LeadTime, y=PreviousCancellations) + 
       geom_point() + geom_smooth(method = "lm", se = F)
 
 scatterPrevNotCancel <- ggplot(data = data1) + 
