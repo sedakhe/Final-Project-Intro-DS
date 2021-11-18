@@ -1,0 +1,298 @@
+---
+title: "Project"
+author: "Angad Singh"
+date: "17/11/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+
+library(tidyverse)
+
+data1 <- 
+read_csv("https://intro-datascience.s3.us-east-2.amazonaws.com/Resort01.csv ")
+
+data2 <- read.csv("https://intro-datascience.s3.us-east-2.amazonaws.com/Resort01.csv ")
+str(data2)
+data1$IsCanceled <- as.factor(data1$IsCanceled)
+
+datacancelledtidy <- data1%>%filter(IsCanceled == 1)
+datanocanceltidy <- data1%>%filter(IsCanceled == 0)
+
+datacancelled <- data1[data$IsCanceled == 1,]
+datanocancel <- data1[data$IsCanceled == 0,]
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r}
+countsLeadTime <- table(data1$IsCanceled, data1$LeadTime)
+
+countsWeekendNights <- table(data1$IsCanceled, data1$StaysInWeekendNights)
+
+countsWeekNights <- table(data1$IsCanceled, data1$StaysInWeekNights)
+
+countsAdults <- table(data1$IsCanceled, data1$Adults)
+
+countsChildren <- table(data1$IsCanceled, data1$Children)
+
+countsBabies <- table(data1$IsCanceled, data1$Babies)
+
+countsRepeatedGuest <- table(data1$IsCanceled, data1$IsRepeatedGuest)
+
+countsPrevCancel <- table(data1$IsCanceled,data1$PreviousCancellations)
+
+countsPrevNotCancel <- table(data1$IsCanceled, data1$PreviousBookingsNotCanceled)
+
+countsReqParking <- table(data1$IsCanceled, data1$RequiredCarParkingSpaces)
+
+countsSpecReq <- table(data1$IsCanceled, data1$TotalOfSpecialRequests)
+
+countsDeposit <- table(data1$IsCanceled, as.factor(data1$DepositType))
+
+countsMarketSeg <- table(data1$IsCanceled, as.factor(data1$MarketSegment))
+
+countsCustomerType <- table(data1$IsCanceled, as.factor(data1$CustomerType))
+
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+barAdults <- barplot(countsAdults, main = "Adults", col = c("darkblue", "red"),
+        legend = rownames(countsAdults))
+
+barBabies <- barplot(countsBabies, main = "Babies", col = c("darkblue", "red"),
+        legend = rownames(countsBabies))
+
+barChildren <- barplot(countsChildren, main = "Children",
+            col = c("darkblue", "red"), legend = rownames(countsChildren))
+
+barCustType <- barplot(countsCustomerType, main = "Customer Type", 
+      col = c("darkblue", "red"), legend = rownames(countsCustomerType))
+
+barDeposit <- barplot(countsDeposit, main = "Deposit", 
+             col = c("darkblue", "red"), legend = rownames(countsDeposit))
+
+barLeadTime <- barplot(countsLeadTime, main ="LeadTime", 
+            col = c("darkblue", "red"), legend = rownames(countsLeadTime))
+
+barMarkSeg <- barplot(countsMarketSeg, main = "Market Segment", 
+              col = c("darkblue", "red"), legend = rownames(countsMarketSeg))
+
+barPrevCancel <- barplot(countsPrevCancel, main = "Previous Cancellation", 
+            col = c("darkblue", "red"), legend = rownames(countsPrevCancel))
+
+barPrevNotCancel <- barplot(countsPrevNotCancel, 
+            main = "No Previous Cancellation", col = c("darkblue", "red"),
+        legend = rownames(countsPrevNotCancel))
+
+barRepeated <- barplot(countsRepeatedGuest, main = "Repeated Customer", 
+             col = c("darkblue", "red"), legend = rownames(countsRepeatedGuest))
+
+barParking <- barplot(countsReqParking, main = "Required Parking", 
+             col = c("darkblue", "red"), legend = rownames(countsReqParking))
+
+barSpecReq <- barplot(countsSpecReq, main = "Special Requirements", 
+             col = c("darkblue", "red"), legend = rownames(countsSpecReq))
+
+barWeekend <- barplot(countsWeekendNights, main = "Weekend Nights",
+            col = c("darkblue", "red"), legend = rownames(countsWeekendNights))
+
+barWeek <- barplot(countsWeekNights, main = "Week Nights", 
+            col = c("darkblue", "red"),legend = rownames(countsWeekNights))
+
+```
+
+```{r}
+countsLeadTimeC <- 
+      table(datacancelledtidy$IsCanceled, datacancelledtidy$LeadTime)
+
+countsWeekendNightsC <- 
+table(datacancelledtidy$IsCanceled, datacancelledtidy$StaysInWeekendNights)
+
+countsWeekNightsC <- 
+      table(datacancelledtidy$IsCanceled, datacancelledtidy$StaysInWeekNights)
+
+countsAdultsC <- 
+      table(datacancelledtidy$IsCanceled, datacancelledtidy$Adults)
+
+countsChildrenC <- 
+      table(datacancelledtidy$IsCanceled, datacancelledtidy$Children)
+
+countsBabiesC <- 
+      table(datacancelledtidy$IsCanceled, datacancelledtidy$Babies)
+
+countsRepeatedGuestC <- 
+      table(datacancelledtidy$IsCanceled, datacancelledtidy$IsRepeatedGuest)
+
+countsPrevCancelC <- 
+table(datacancelledtidy$IsCanceled, datacancelledtidy$PreviousCancellations)
+
+countsPrevNotCancelC <- 
+table(datacancelledtidy$IsCanceled, datacancelledtidy$PreviousBookingsNotCanceled)
+
+countsReqParkingC <- 
+table(datacancelledtidy$IsCanceled, datacancelledtidy$RequiredCarParkingSpaces)
+
+countsSpecReqC <- 
+table(datacancelledtidy$IsCanceled, datacancelledtidy$TotalOfSpecialRequests)
+
+countsDepositC <- 
+table(datacancelledtidy$IsCanceled, as.factor(datacancelledtidy$DepositType))
+
+countsMarketSegC <- 
+table(datacancelledtidy$IsCanceled, as.factor(datacancelledtidy$MarketSegment))
+
+countsCustomerTypeC <- 
+table(datacancelledtidy$IsCanceled, as.factor(datacancelledtidy$CustomerType))
+```
+
+
+```{r}
+barAdultsCan <- barplot(countsAdultsC, main = "Adults", 
+            col = c("darkblue", "red"), legend = rownames(countsAdults))
+
+barBabiesCan <- barplot(countsBabiesC, main = "Babies", 
+            col = c("darkblue", "red"), legend = rownames(countsBabies))
+
+barChildrenCan <- barplot(countsChildrenC, main = "Children",
+            col = c("darkblue", "red"), legend = rownames(countsChildren))
+
+barCustTypeCan <- barplot(countsCustomerTypeC, main = "Customer Type", 
+      col = c("darkblue", "red"), legend = rownames(countsCustomerType))
+
+barDepositCan <- barplot(countsDepositC, main = "Deposit", 
+             col = c("darkblue", "red"), legend = rownames(countsDeposit))
+
+barLeadTimeCan <- barplot(countsLeadTimeC, main ="LeadTime", 
+            col = c("darkblue", "red"), legend = rownames(countsLeadTime))
+
+barMarkSegCan <- barplot(countsMarketSegC, main = "Market Segment", 
+              col = c("darkblue", "red"), legend = rownames(countsMarketSeg))
+
+barPrevCancelCan <- barplot(countsPrevCancelC, main = "Previous Cancellation", 
+            col = c("darkblue", "red"), legend = rownames(countsPrevCancel))
+
+barPrevNotCancelCan <- barplot(countsPrevNotCancelC, 
+            main = "No Previous Cancellation", col = c("darkblue", "red"),
+        legend = rownames(countsPrevNotCancel))
+
+barRepeatedCan <- barplot(countsRepeatedGuestC, main = "Repeated Customer", 
+             col = c("darkblue", "red"), legend = rownames(countsRepeatedGuest))
+
+barParkingCan <- barplot(countsReqParkingC, main = "Required Parking", 
+             col = c("darkblue", "red"), legend = rownames(countsReqParking))
+
+barSpecReqCan <- barplot(countsSpecReqC, main = "Special Requirements", 
+             col = c("darkblue", "red"), legend = rownames(countsSpecReq))
+
+barWeekendCan <- barplot(countsWeekendNightsC, main = "Weekend Nights",
+            col = c("darkblue", "red"), legend = rownames(countsWeekendNights))
+
+barWeekCan <- barplot(countsWeekNightsC, main = "Week Nights", 
+            col = c("darkblue", "red"),legend = rownames(countsWeekNights))
+```
+
+
+
+
+```{r}
+boxAdult <- boxplot(IsCanceled~Adults, data=data2)
+
+boxBabies <- boxplot(IsCanceled~Babies, data=data2)
+
+boxChildren <- boxplot(IsCanceled~Children, data=data2)
+
+boxCustType <- boxplot(IsCanceled~CustomerType, data=data2)
+
+boxDeposit <- boxplot(IsCanceled~DepositType, data=data2)
+
+boxLeadTime <- boxplot(IsCanceled~LeadTime, data=data2)
+
+boxMarkSeg <- boxplot(IsCanceled~MarketSegment, data=data2)
+
+boxPrevCancel <- boxplot(IsCanceled~PreviousCancellations, data=data2)
+
+boxPrevNotCancel <- boxplot(IsCanceled~PreviousBookingsNotCanceled, data=data2)
+
+boxRepeated <-boxplot(IsCanceled~IsRepeatedGuest, data=data2)
+
+boxParking <- boxplot(IsCanceled~RequiredCarParkingSpaces, data=data2)
+
+boxSpecReq <- boxplot(IsCanceled~TotalOfSpecialRequests, data=data2)
+
+boxWeekend <- boxplot(IsCanceled~StaysInWeekendNights, data=data2)
+
+boxWeek <- boxplot(IsCanceled~StaysInWeekNights, data=data2)
+```
+
+
+
+```{r}
+library(ggplot2)
+
+scatterAdult <- ggplot(data = data1) + aes(x=IsCanceled, y=Adults) + 
+      geom_point() + geom_smooth(method = "lm", se = F)
+
+scatterBabies <- ggplot(data = data1) + aes(x=IsCanceled, y=Babies) + 
+      geom_point() + geom_smooth(method = "lm", se = F)
+
+scatterChildren <- ggplot(data = data1) + aes(x=IsCanceled, y=Children) + 
+      geom_point() + geom_smooth(method = "lm", se = F)
+
+scatterCustType <- ggplot(data = data1) + aes(x=IsCanceled, y=CustomerType) + 
+      geom_point() + geom_smooth(method = "lm", se = F)
+
+scatterDeposit <- ggplot(data = data1) + aes(x=IsCanceled, y=DepositType) + 
+      geom_point() + geom_smooth(method = "lm", se = F)
+
+scatterLeadTime <- ggplot(data = data1) + aes(x=IsCanceled, y=LeadTime) + 
+      geom_point() + geom_smooth(method = "lm", se = F)
+
+scatterMarketSeg <- ggplot(data = data1) + aes(x=IsCanceled, y=MarketSegment) + 
+      geom_point() + geom_smooth(method = "lm", se = F)
+
+scatterPrevCancel <- ggplot(data = data1) + 
+      aes(x=IsCanceled, y=PreviousCancellations) + 
+      geom_point() + geom_smooth(method = "lm", se = F)
+
+scatterPrevNotCancel <- ggplot(data = data1) + 
+      aes(x=IsCanceled, y=PreviousBookingsNotCanceled) + 
+      geom_point() + geom_smooth(method = "lm", se = F)
+
+scatterRepeated <- ggplot(data = data1) + 
+      aes(x=IsCanceled, y=IsRepeatedGuest) + 
+      geom_point() + geom_smooth(method = "lm", se = F)
+
+scatterParking <- ggplot(data = data1) + 
+      aes(x=IsCanceled, y=RequiredCarParkingSpaces) + 
+      geom_point() + geom_smooth(method = "lm", se = F)
+
+scatterSpecReq <- ggplot(data = data1) + 
+      aes(x=IsCanceled, y=TotalOfSpecialRequests) + 
+      geom_point() + geom_smooth(method = "lm", se = F)
+
+scatterWeekend <- ggplot(data = data1) + 
+      aes(x=IsCanceled, y=StaysInWeekendNights) + 
+      geom_point() + geom_smooth(method = "lm", se = F)
+
+scatterWeek <- ggplot(data = data1) + aes(x=IsCanceled, y=StaysInWeekNights) + 
+      geom_point() + geom_smooth(method = "lm", se = F)
+
+      
+```
+
