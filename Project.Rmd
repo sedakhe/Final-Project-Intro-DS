@@ -332,7 +332,7 @@ data_new <- data.frame(Cancellation = as.factor(data1$IsCanceled),
    as.factor(data1$PreviousCancellations), PrevBook = as.factor(data1$PreviousBookingsNotCanceled), History_Cancel = as.factor(data1$PreviousBookingsNotCanceled - data1$PreviousCancellations < 0),
  Reserved_Room = as.factor(data1$ReservedRoomType), 
  Assigned_Room = as.factor(data1$AssignedRoomType),
- Get_Desired_Room = as.factor(data1$ReservedRoomType == data1$AssignedRoomType),
+ Get_Desired_Room = data1$ReservedRoomType == data1$AssignedRoomType,
  Booking_Changes = as.factor(data1$BookingChanges), 
  Deposit = as.factor(data1$DepositType), 
  Customer_Type = as.factor(data1$CustomerType),
@@ -346,9 +346,11 @@ str(data_new)
 datax <- as(data_new, Class = "transactions")
 # itemFrequency(datax)
 # itemFrequencyPlot(datax)
-rules <- apriori(datax, parameter = list(supp = 0.005, conf = 0.7),
+rules <- apriori(datax, parameter = list(supp = 0.03
+                                         , conf = 0.85),
                  control =list(verbose = F),
                  appearance = list(default = "lhs", rhs = "Cancellation=1"))
 inspect(rules)
+
 ```
 
