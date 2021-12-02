@@ -45,6 +45,9 @@ countsWeekendNights <- table(data1$IsCanceled, data1$StaysInWeekendNights)
 
 countsWeekNights <- table(data1$IsCanceled, data1$StaysInWeekNights)
 
+countsTotalNights <- table (data1$IsCanceled, 
+                            data1$StaysInWeekendNights+data1$StaysInWeekNights)
+
 countsAdults <- table(data1$IsCanceled, data1$Adults)
 
 countsChildren <- table(data1$IsCanceled, data1$Children)
@@ -115,6 +118,9 @@ barWeekend <- barplot(countsWeekendNights, main = "Weekend Nights",
 barWeek <- barplot(countsWeekNights, main = "Week Nights", 
             col = c("darkblue", "red"),legend = rownames(countsWeekNights))
 
+barTotal <- barplot(countsTotalNights, main = "Total Nights", 
+            col = c("darkblue", "red"),legend = rownames(countsTotalNights))
+
 ```
 
 ```{r}
@@ -126,6 +132,9 @@ table(datacancelledtidy$IsCanceled, datacancelledtidy$StaysInWeekendNights)
 
 countsWeekNightsC <- 
       table(datacancelledtidy$IsCanceled, datacancelledtidy$StaysInWeekNights)
+
+countsTotalNightsC <- table (datacancelledtidy$IsCanceled, 
+datacancelledtidy$StaysInWeekendNights+datacancelledtidy$StaysInWeekNights)
 
 countsAdultsC <- 
       table(datacancelledtidy$IsCanceled, datacancelledtidy$Adults)
@@ -159,6 +168,8 @@ table(datacancelledtidy$IsCanceled, as.factor(datacancelledtidy$MarketSegment))
 
 countsCustomerTypeC <- 
 table(datacancelledtidy$IsCanceled, as.factor(datacancelledtidy$CustomerType))
+
+
 ```
 
 
@@ -205,6 +216,9 @@ barWeekendCan <- barplot(countsWeekendNightsC, main = "Weekend Nights",
 
 barWeekCan <- barplot(countsWeekNightsC, main = "Week Nights", 
             col = c("darkblue", "red"),legend = rownames(countsWeekNights))
+
+barTotalCan <- barplot(countsTotalNightsC, main = "Total Nights", 
+            col = c("darkblue", "red"),legend = rownames(countsTotalNightsC))
 ```
 
 
@@ -238,6 +252,9 @@ boxSpecReq <- boxplot(IsCanceled~TotalOfSpecialRequests, data=data2)
 boxWeekend <- boxplot(IsCanceled~StaysInWeekendNights, data=data2)
 
 boxWeek <- boxplot(IsCanceled~StaysInWeekNights, data=data2)
+
+boxTotal <- boxplot(IsCanceled~StaysInWeekendNights+StaysInWeekNights,
+                    data = data2)
 ```
 
 
@@ -293,6 +310,45 @@ scatterWeekend <- ggplot(data = data1) +
 scatterWeek <- ggplot(data = data1) + aes(x=IsCanceled, y=StaysInWeekNights) + 
       geom_point() + geom_smooth(method = "lm", se = F)
 
+scatterTotal <- ggplot(data = data1) + aes(x=LeadTime, y=StaysInWeekNights + StaysInWeekendNights) +  geom_point() + geom_smooth(method = "lm", se = F)
+
       
+```
+
+```{r}
+library(arules)
+library(arulesViz)
+
+data_new <- data.frame(Cancellation = as.factor(data1$IsCanceled),
+                       LeadTime = as.factor(data1$LeadTime),
+                       WeekendNights = as.factor(data1$StaysInWeekendNights),
+                       WeekNights = as.factor(data1$StaysInWeekNights),
+ TotalNights = as.factor(data1$StaysInWeekendNights+data1$StaysInWeekNights),
+                        Adults = as.factor(data1$Adults),
+ Babies = as.factor(data1$Babies),
+ Chidren = as.factor(data1$Children), Meal = as.factor(data1$Meal),
+ Country = as.factor(data1$Country), Market_Seg = as.factor(data1$MarketSegment),
+ Repeated_Guest = as.factor(data1$IsRepeatedGuest), Prev_Cancel = 
+   as.factor(data1$PreviousCancellations), PrevBook = as.factor(data1$PreviousBookingsNotCanceled), History_Cancel = as.factor(data1$PreviousBookingsNotCanceled - data1$PreviousCancellations < 0),
+ Reserved_Room = as.factor(data1$ReservedRoomType), 
+ Assigned_Room = as.factor(data1$AssignedRoomType),
+ Get_Desired_Room = as.factor(data1$ReservedRoomType == data1$AssignedRoomType),
+ Booking_Changes = as.factor(data1$BookingChanges), 
+ Deposit = as.factor(data1$DepositType), 
+ Customer_Type = as.factor(data1$CustomerType),
+ Car_Park_Required = as.factor(data1$RequiredCarParkingSpaces),
+ Special_Requests = as.factor(data1$TotalOfSpecialRequests))
+
+str(data_new)
+```
+
+```{r}
+datax <- as(data_new, Class = "transactions")
+# itemFrequency(datax)
+# itemFrequencyPlot(datax)
+rules <- apriori(datax, parameter = list(supp = 0.005, conf = 0.7),
+                 control =list(verbose = F),
+                 appearance = list(default = "lhs", rhs = "Cancellation=1"))
+inspect(rules)
 ```
 
