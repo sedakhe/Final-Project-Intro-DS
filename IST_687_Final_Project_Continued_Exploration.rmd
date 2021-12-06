@@ -1,0 +1,294 @@
+---
+title: "IST_697_Group_Project_Continued"
+author: "Eric R. Pfeiffer"
+date: "11/23/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# Business questions we can ask:
+
+# Are cancellation patterns different across different market segments?
+
+# Are cancellation patterns different across different deposit types? 
+
+# Are there additional kinds of data that could be useful for the hotel to 
+# collect and how? 
+
+# Why might guests who have previously stayed at the hotel cancel their 
+# bookings? 
+
+# Are cancellations different across the top three most common countries? 
+```
+
+
+```{r}
+library(tidyverse)
+
+bookings_full <-  read_csv("https://intro-datascience.s3.us-east-2.amazonaws.com/Resort01.csv")
+
+bookings_cleaned <- bookings_full %>% filter(Country != "NULL")
+
+bookings_canceled <- bookings_cleaned %>% filter(IsCanceled == 1)
+
+bookings_stayed <- bookings_cleaned %>% filter(IsCanceled == 0)
+```
+
+```{r}
+# There are 11,077 canceled bookings and 28519 bookings. 
+# I have two ways to start my analysis. I can look for trends and patterns 
+# among the successful bookings, or I can look for trends and patterns among 
+# the canceled bookings. I'm going to start by looking at the canceled bookings.
+```
+
+```{r}
+# Let's generate some histograms and descriptive statistics for the various 
+# numeric variables in "bookings_canceled". 
+
+summary(bookings_canceled$LeadTime)
+
+range(bookings_canceled$LeadTime)
+
+# So, the shortest lead time was 0 days, i.e., the booking was made and 
+# canceled on the same day. The longest lead time was 471 days, 
+# meaning that a booking was made over a year in advance and still canceled. 
+
+# How many bookings were made and canceled in the same day? 
+```
+
+```{r}
+# Canceled bookings with a lead time of 0
+
+same_day_cancelled <- bookings_canceled %>% filter(LeadTime == 0)
+```
+
+```{r}
+# Bookings by previous guest or not 
+
+guest_previous <- bookings_cleaned %>% filter(IsRepeatedGuest == 1)
+
+guest_new <- bookings_cleaned %>% filter(IsRepeatedGuest == 0)
+
+guest_previous[guest_previous$IsCanceled == 1, ]
+# There are 111 bookings for repeated guests who canceled their stays
+```
+
+```{r}
+# What are the different market segments? 
+
+market_segments <- unique(bookings_cleaned[c("MarketSegment")])
+market_segments
+```
+```{r}
+# There are 6 different kinds of market segments: Direct, Corporate, Online TA, 
+# Offline TA/TO, Complementary, and Groups 
+
+bookings_cleaned[bookings_cleaned$MarketSegment == "Direct", ]
+# There are 6,357 total "Direct" bookings
+
+bookings_cleaned[bookings_cleaned$MarketSegment == "Corporate", ]
+# There are 2,126 total "Corporate" bookings
+
+bookings_cleaned[bookings_cleaned$MarketSegment == "Online TA", ]
+# There are 17,655 total "Online TA" bookings
+
+bookings_cleaned[bookings_cleaned$MarketSegment == "Offline TA/TO", ]
+# There are 7,427 total "Offline TA/TO" bookings
+
+bookings_cleaned[bookings_cleaned$MarketSegment == "Complementary", ]
+# There are 199 total "Complementary" bookings
+
+bookings_cleaned[bookings_cleaned$MarketSegment == "Groups", ]
+# There are 5,832 total "Groups" bookings
+```
+```{r}
+bookings_canceled %>% filter(MarketSegment == "Complementary")
+
+bookings_canceled %>% filter(MarketSegment == "Corporate")
+
+bookings_canceled %>% filter(MarketSegment == "Direct")
+
+bookings_canceled %>% filter(MarketSegment == "Groups")
+
+bookings_canceled %>% filter(MarketSegment == "Offline TA/TO")
+
+bookings_canceled %>% filter(MarketSegment == "Online TA")
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+
+bookings_cleaned %>% group_by(MarketSegment) %>% 
+  summarize(total = sum(IsCanceled)) %>% 
+  ggplot(aes(x = MarketSegment, y = total)) +
+  geom_col(color = "black") + 
+  ggtitle("Total # of Cancelations per Market Segment")
+```
+```{r}
+perc_direct <- sum(bookings_canceled$MarketSegment == "Direct") / sum(bookings_cleaned$MarketSegment == "Direct") * 100
+
+perc_corp <- sum(bookings_canceled$MarketSegment == "Corporate") / sum(bookings_cleaned$MarketSegment == "Corporate") * 100
+
+perc_online_TA <- sum(bookings_canceled$MarketSegment == "Online TA") / sum(bookings_cleaned$MarketSegment == "Online TA") * 100
+
+perc_offline_TA <- sum(bookings_canceled$MarketSegment == "Offline TA/TO") / sum(bookings_cleaned$MarketSegment == "Offline TA/TO") * 100
+
+perc_comp <- sum(bookings_canceled$MarketSegment == "Complementary") / sum(bookings_cleaned$MarketSegment == "Complementary") * 100
+
+perc_groups <- sum(bookings_canceled$MarketSegment == "Groups") / sum(bookings_cleaned$MarketSegment == "Groups") * 100
+```
+
+
+```{r}
+cancelled_by_segment <- data.frame(MarketSegment = unique(bookings_cleaned[c("MarketSegment")]))
+
+cancelled_by_segment$PercentCanceled <- c(perc_direct, perc_corp, perc_online_TA, perc_offline_TA, perc_comp, perc_groups)
+
+view(cancelled_by_segment)
+```
+
+```{r}
+bookings_online_TA <- bookings_cleaned %>% filter(MarketSegment == "Online TA")
+```
+
+```{r}
+bookings_groups <- bookings_cleaned %>% filter(MarketSegment == "Groups")
+```
+
+```{r}
+summary(bookings_canceled$Adults)
+
+range(bookings_canceled$Adults)
+```
+
+```{r}
+summary(bookings_cleaned$Adults)
+
+range(bookings_cleaned$Adults)
+```
+
+```{r}
+summary(bookings_online_TA$Adults)
+
+range(bookings_online_TA$Adults)
+```
+
+```{r}
+summary(bookings_groups$Adults)
+
+range(bookings_groups$Adults)
+
+view(bookings_cleaned)
+```
+```{r}
+summary(bookings_online_TA$Children)
+
+range(bookings_online_TA$Children)
+```
+
+```{r}
+summary(bookings_groups$Children)
+
+range(bookings_groups$Children)
+```
+
+```{r}
+summary(bookings_online_TA$Babies)
+
+range(bookings_online_TA$Babies)
+```
+
+```{r}
+summary(bookings_groups$Babies)
+
+range(bookings_groups$Babies)
+```
+```{r}
+summary(bookings_groups$StaysInWeekNights)
+
+range(bookings_groups$StaysInWeekNights)
+```
+```{r}
+summary(bookings_online_TA$StaysInWeekNights)
+
+range(bookings_online_TA$StaysInWeekNights)
+```
+```{r}
+boxplot(bookings_groups$StaysInWeekNights)
+
+boxplot(bookings_online_TA$StaysInWeekNights)
+```
+
+```{r}
+bookings_PRT <- bookings_cleaned %>% filter(Country == "PRT")
+
+bookings_not_PRT <- bookings_cleaned %>% filter(Country != "PRT")
+```
+
+```{r}
+(sum(bookings_PRT$IsCanceled == 1) / 17630) * 100
+
+(sum(bookings_not_PRT$IsCanceled == 1) / 21966) * 100
+```
+
+```{r}
+table_bookings_cleaned <- table(bookings_cleaned$Country)
+```
+
+```{r}
+table_bookings_canceled <- table(bookings_canceled$Country)
+```
+
+```{r}
+country_all <- data.frame(table(bookings_cleaned$Country))
+
+country_cancel <- data.frame(table(bookings_canceled$Country))
+
+country_all$Country == country_cancel$Country
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo = FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+CountryCancelCounts <- as.data.frame(table_bookings_canceled)
+CountryCounts <- as.data.frame(table_bookings_cleaned)
+
+CommonCounts <- CountryCounts[which(CountryCounts$Var1 %in% CountryCancelCounts$Var1),]
+CommonCounts$Ratio <- CountryCancelCounts$Freq / CommonCounts$Freq
+
+CancelRatio <- CommonCounts[, -2]
+names(CancelRatio)[1] <- 'Country'
+
+CancelRatio <- CancelRatio[order(CancelRatio$Ratio),]
+
+view(CancelRatio)
+
+library(ggplot2)
+ggplot(CancelRatio, aes(x = reorder(Country, Ratio), y = Ratio, fill = Ratio)) + geom_bar(stat="identity") + scale_fill_gradient2(low='darkgreen', mid='snow3', high='red', space='Lab') + labs(x="Country", y="Ratio")
+```
+
+
+```{r}
+library(e1071)
+library(rpart)
+library(rpart.plot)
+rpartModel <- rpart(IsCanceled ~ ., data = bookings_cleaned)
+rpartModel
+rpart.plot(rpartModel)
+```
+
+
+
