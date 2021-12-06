@@ -9,11 +9,6 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r}
 
@@ -34,9 +29,10 @@ datanocancel <- data2[data2$IsCanceled == 0,]
 
 ```
 
-## Including Plots
+## Plots
 
-You can also embed plots, for example:
+
+Barplots:
 
 ```{r}
 countsLeadTime <- table(data1$IsCanceled, data1$LeadTime)
@@ -75,53 +71,103 @@ countsCustomerType <- table(data1$IsCanceled, as.factor(data1$CustomerType))
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 ```{r}
+# barAdults <- barplot(countsAdults, main = "Adults", col = c("darkblue", "red"),
+#         legend = rownames(countsAdults))
+# 
+# barBabies <- barplot(countsBabies, main = "Babies", col = c("darkblue", "red"),
+#         legend = rownames(countsBabies))
+# 
+# barChildren <- barplot(countsChildren, main = "Children",
+#             col = c("darkblue", "red"), legend = rownames(countsChildren))
+# 
+# barCustType <- barplot(countsCustomerType, main = "Customer Type", 
+#       col = c("darkblue", "red"), legend = rownames(countsCustomerType))
+# 
+# barDeposit <- barplot(countsDeposit, main = "Deposit", 
+#              col = c("darkblue", "red"), legend = rownames(countsDeposit))
+# 
+# barLeadTime <- barplot(countsLeadTime, main ="LeadTime", 
+#             col = c("darkblue", "red"), legend = rownames(countsLeadTime))
+# 
+# barMarkSeg <- barplot(countsMarketSeg, main = "Market Segment", 
+#               col = c("darkblue", "red"), legend = rownames(countsMarketSeg))
+# 
+# barPrevCancel <- barplot(countsPrevCancel, main = "Previous Cancellation", 
+#             col = c("darkblue", "red"), legend = rownames(countsPrevCancel))
+# 
+# barPrevNotCancel <- barplot(countsPrevNotCancel, 
+#             main = "No Previous Cancellation", col = c("darkblue", "red"),
+#         legend = rownames(countsPrevNotCancel))
+# 
+# barRepeated <- barplot(countsRepeatedGuest, main = "Repeated Customer", 
+#              col = c("darkblue", "red"), legend = rownames(countsRepeatedGuest))
+# 
+# barParking <- barplot(countsReqParking, main = "Required Parking", 
+#              col = c("darkblue", "red"), legend = rownames(countsReqParking))
+# 
+# barSpecReq <- barplot(countsSpecReq, main = "Special Requirements", 
+#              col = c("darkblue", "red"), legend = rownames(countsSpecReq))
+# 
+# barWeekend <- barplot(countsWeekendNights, main = "Weekend Nights",
+#             col = c("darkblue", "red"), legend = rownames(countsWeekendNights))
+# 
+# barWeek <- barplot(countsWeekNights, main = "Week Nights", 
+#             col = c("darkblue", "red"),legend = rownames(countsWeekNights))
+# 
+# barTotal <- barplot(countsTotalNights, main = "Total Nights", 
+#             col = c("darkblue", "red"),legend = rownames(countsTotalNights))
+```
+
+Graphs with better legends:
+```{r}
 barAdults <- barplot(countsAdults, main = "Adults", col = c("darkblue", "red"),
-        legend = rownames(countsAdults))
+        legend = c("Not Cancelled", "Cancelled"))
 
 barBabies <- barplot(countsBabies, main = "Babies", col = c("darkblue", "red"),
-        legend = rownames(countsBabies))
+        legend = c("Not Cancelled", "Cancelled"))
 
 barChildren <- barplot(countsChildren, main = "Children",
-            col = c("darkblue", "red"), legend = rownames(countsChildren))
+            col = c("darkblue", "red"), legend = c("Not Cancelled", "Cancelled"))
 
 barCustType <- barplot(countsCustomerType, main = "Customer Type", 
-      col = c("darkblue", "red"), legend = rownames(countsCustomerType))
+      col = c("darkblue", "red"), legend = c("Not Cancelled", "Cancelled"))
 
 barDeposit <- barplot(countsDeposit, main = "Deposit", 
-             col = c("darkblue", "red"), legend = rownames(countsDeposit))
+             col = c("darkblue", "red"), legend = c("Not Cancelled", "Cancelled"))
 
 barLeadTime <- barplot(countsLeadTime, main ="LeadTime", 
-            col = c("darkblue", "red"), legend = rownames(countsLeadTime))
+            col = c("darkblue", "red"), legend = c("Not Cancelled", "Cancelled"))
 
 barMarkSeg <- barplot(countsMarketSeg, main = "Market Segment", 
-              col = c("darkblue", "red"), legend = rownames(countsMarketSeg))
+              col = c("darkblue", "red"), legend = c("Not Cancelled", "Cancelled"))
 
 barPrevCancel <- barplot(countsPrevCancel, main = "Previous Cancellation", 
-            col = c("darkblue", "red"), legend = rownames(countsPrevCancel))
+            col = c("darkblue", "red"), legend = c("Not Cancelled", "Cancelled"))
 
 barPrevNotCancel <- barplot(countsPrevNotCancel, 
             main = "No Previous Cancellation", col = c("darkblue", "red"),
-        legend = rownames(countsPrevNotCancel))
+        legend = c("Not Cancelled", "Cancelled"))
 
 barRepeated <- barplot(countsRepeatedGuest, main = "Repeated Customer", 
-             col = c("darkblue", "red"), legend = rownames(countsRepeatedGuest))
+             col = c("darkblue", "red"), legend = c("Not Cancelled", "Cancelled"))
 
 barParking <- barplot(countsReqParking, main = "Required Parking", 
-             col = c("darkblue", "red"), legend = rownames(countsReqParking))
+             col = c("darkblue", "red"), legend = c("Not Cancelled", "Cancelled"))
 
 barSpecReq <- barplot(countsSpecReq, main = "Special Requirements", 
-             col = c("darkblue", "red"), legend = rownames(countsSpecReq))
+             col = c("darkblue", "red"), legend = c("Not Cancelled", "Cancelled"))
 
 barWeekend <- barplot(countsWeekendNights, main = "Weekend Nights",
-            col = c("darkblue", "red"), legend = rownames(countsWeekendNights))
+            col = c("darkblue", "red"), legend = c("Not Cancelled", "Cancelled"))
 
 barWeek <- barplot(countsWeekNights, main = "Week Nights", 
-            col = c("darkblue", "red"),legend = rownames(countsWeekNights))
+            col = c("darkblue", "red"),legend = c("Not Cancelled", "Cancelled"))
 
 barTotal <- barplot(countsTotalNights, main = "Total Nights", 
-            col = c("darkblue", "red"),legend = rownames(countsTotalNights))
-
+            col = c("darkblue", "red"),legend = c("Not Cancelled", "Cancelled"))
 ```
+
+
 
 ```{r}
 countsLeadTimeC <- 
@@ -222,7 +268,7 @@ barTotalCan <- barplot(countsTotalNightsC, main = "Total Nights",
 ```
 
 
-
+Boxplots:
 
 ```{r}
 boxAdult <- boxplot(IsCanceled~Adults, data=data2)
@@ -257,7 +303,7 @@ boxTotal <- boxplot(IsCanceled~StaysInWeekendNights+StaysInWeekNights,
                     data = data2)
 ```
 
-
+Scatterplots:
 
 ```{r}
 library(ggplot2)
@@ -315,6 +361,10 @@ scatterTotal <- ggplot(data = data1) + aes(x=LeadTime, y=StaysInWeekNights + Sta
       
 ```
 
+
+Rules:
+
+Data conversion for generating Rules:
 ```{r}
 library(arules)
 library(arulesViz)
@@ -342,15 +392,61 @@ data_new <- data.frame(Cancellation = as.factor(data1$IsCanceled),
 str(data_new)
 ```
 
+Generating rules with a Confidence = 0.85 and Support = 0.05:
+
 ```{r}
 datax <- as(data_new, Class = "transactions")
 # itemFrequency(datax)
 # itemFrequencyPlot(datax)
-rules <- apriori(datax, parameter = list(supp = 0.03
+rules <- apriori(datax, parameter = list(supp = 0.05
                                          , conf = 0.85),
                  control =list(verbose = F),
                  appearance = list(default = "lhs", rhs = "Cancellation=1"))
 inspect(rules)
-
 ```
+
+```{r}
+library(rpart)
+library(rpart.plot)
+rpartModel <- rpart(IsCanceled ~ ., data = data2)
+rpartModel
+rpart.plot(rpartModel)
+```
+```{r}
+data_all_numeric <- data.frame(
+  Cancellation = as.numeric(data1$IsCanceled),
+  LeadTime = as.numeric(data1$LeadTime),
+  WeekendNights = as.numeric(data1$StaysInWeekendNights),
+  WeekNights = as.numeric(data1$StaysInWeekNights),
+  TotalNights = as.numeric(data1$StaysInWeekendNights+data1$StaysInWeekNights),
+  Adults = as.numeric(data1$Adults),
+  Babies = as.numeric(data1$Babies),
+  Chidren = as.numeric(data1$Children), 
+  Meal = as.numeric(as.factor(data1$Meal)),
+  Country = as.numeric(as.factor(data1$Country)), 
+  Market_Seg = as.numeric(as.factor(data1$MarketSegment)),
+  Repeated_Guest = as.numeric(data1$IsRepeatedGuest), 
+  Prev_Cancel = as.numeric(data1$PreviousCancellations), 
+  PrevBook = as.numeric(data1$PreviousBookingsNotCanceled), 
+  History_Cancel = as.numeric(data1$PreviousBookingsNotCanceled - data1$PreviousCancellations < 0),
+  Reserved_Room = as.numeric(as.factor(data1$ReservedRoomType)), 
+  Assigned_Room = as.numeric(as.factor(data1$AssignedRoomType)),
+  Get_Desired_Room = as.numeric(data1$ReservedRoomType == data1$AssignedRoomType),
+  Booking_Changes = as.numeric(data1$BookingChanges), 
+  Deposit = as.numeric(as.factor(data1$DepositType)), 
+  Customer_Type = as.numeric(as.factor(data1$CustomerType)),
+  Car_Park_Required = as.numeric(data1$RequiredCarParkingSpaces),
+  Special_Requests = as.numeric(data1$TotalOfSpecialRequests)
+  )
+
+str(data_all_numeric)
+```
+
+
+
+```{r message=TRUE}
+lmOut <- lm(Cancellation ~ ., data = data_all_numeric)
+summary(lmOut)
+```
+
 
